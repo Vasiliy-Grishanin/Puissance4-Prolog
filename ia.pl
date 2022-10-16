@@ -6,6 +6,7 @@
 :- module(ia, [iaAleatoire/1
 			  ,iaMinimax/7
 			  ,toujoursMilieu/1
+			  ,toujoursMilieuContre/2
 			  ,poidsPuissance3/1
 			  ,poidsPosition/1
 			  ,poidsDensite/1
@@ -48,6 +49,7 @@ iaMinimax(JoueurCourant,Coup,Profondeur,PoidsPosition,PoidsPuissance3,PoidsDensi
 	assert(poidsAdjacence(PoidsAdjacence)),
 	parcoursArbre(JoueurCourant,Profondeur,Coup,_).
 
+%% Joue toujours au milieu. Si occupé, colonne la plus proche du milieu
 toujoursMilieu(Coup) :-
 	Coup is 4,
 	coupValide(Coup).
@@ -69,3 +71,13 @@ toujoursMilieu(Coup) :-
 toujoursMilieu(Coup) :-
 	Coup is 1,
 	coupValide(Coup).
+
+
+%% En priorité, essaye de contrer la victoire imminente de l'adversaire.
+%% Si pas de victoire imminente en cours, joue toujours au milieu. Si occupé, colonne la plus proche du milieu
+toujoursMilieuContre(JoueurCourant,Coup) :-
+	evalVictoireAdversaire(JoueurCourant,Coup),
+	coupValide(Coup).
+
+toujoursMilieuContre(JoueurCourant,Coup) :-
+	toujoursMilieu(Coup).

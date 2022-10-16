@@ -9,7 +9,8 @@
 	coupValide/1,
 	typeJoueur/2,
 	changerJoueur/0,
-	insererJeton/3
+	insererJeton/3,
+	evalVictoireAdversaire/2
 ]).
 
 %%%%%%%%%%%%%%%%
@@ -35,6 +36,8 @@ typeJoueur(1,'Humain').
 typeJoueur(2,'IA Aléatoire').
 typeJoueur(3,'IA Minimax 3 - eval Position').
 typeJoueur(9,'IA Toujours Milieu').
+typeJoueur(10,'IA Toujours Milieu + contre').
+
 
 changerJoueur :-
 	joueurCourant(rouge,TypeJoueurR),
@@ -240,3 +243,132 @@ calculPositionJeton(X,YCheck,YCheck) :-
 calculPositionJeton(X,YCheck,Y) :-
 	incr(YCheck, YCheck1),
 	calculPositionJeton(X,YCheck1,Y).
+
+%% AJOUTS %%
+
+case(X,Y,J,XSimule,YSimule):-
+	X==XSimule,
+	Y==YSimule.
+
+case(X,Y,J,XSimule,YSimule):-
+	case(X,Y,J).
+
+%%%%% gagne %%%%%
+
+%%% En colonne %%%
+
+gagneColonne(X,Y,J,XSimule,YSimule) :-
+	case(X,Y,J,XSimule,YSimule),
+	decr(Y,Y1),
+	case(X,Y1,J,XSimule,YSimule),
+	decr(Y1,Y2),
+	case(X,Y2,J,XSimule,YSimule),
+	decr(Y2,Y3),
+	case(X,Y3,J,XSimule,YSimule). %ligne en bas
+
+%%% En ligne %%%
+
+gagneLigne(X,Y,J,XSimule,YSimule) :-
+	gaucheVerif(X,Y,J,Rg,XSimule,YSimule),
+	droiteVerif(X,Y,J,Rd,XSimule,YSimule),
+	!,
+	Rf is Rg+Rd, Rf>4.
+
+gaucheVerif(X,Y,J,Rg,XSimule,YSimule):-
+	gauche(X,Y,J,0,Rg,XSimule,YSimule).
+gauche(X,Y,J,R,R,XSimule,YSimule) :-
+	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'� la case non J
+gauche(X,Y,J,R,Rg,XSimule,YSimule) :-
+	decr(X,X1),
+	incr(R,R1),
+	gauche(X1,Y,J,R1,Rg,XSimule,YSimule).
+
+droiteVerif(X,Y,J,Rg,XSimule,YSimule):-
+	droite(X,Y,J,0,Rg,XSimule,YSimule).
+droite(X,Y,J,R,R,XSimule,YSimule) :-
+	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'� la case non J
+droite(X,Y,J,R,Rg,XSimule,YSimule) :-
+	incr(X,X1),
+	incr(R,R1),
+	droite(X1,Y,J,R1,Rg,XSimule,YSimule).
+
+%%% En diagonale \ %%%
+
+gagneDiag1(X,Y,J,XSimule,YSimule) :-
+	gaucheHautVerif(X,Y,J,Rg,XSimule,YSimule),
+	droiteBasVerif(X,Y,J,Rd,XSimule,YSimule),
+	!,
+	Rf is Rg+Rd,
+	Rf>4.
+
+gaucheHautVerif(X,Y,J,Rg,XSimule,YSimule):-
+	gaucheHaut(X,Y,J,0,Rg,XSimule,YSimule).
+gaucheHaut(X,Y,J,R,R,XSimule,YSimule) :-
+	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'� la case non J
+gaucheHaut(X,Y,J,R,Rg,XSimule,YSimule) :-
+	incr(Y,Y1),
+	decr(X,X1),
+	incr(R,R1),
+	gaucheHaut(X1,Y1,J,R1,Rg,XSimule,YSimule).
+
+droiteBasVerif(X,Y,J,Rg,XSimule,YSimule):-
+	droiteBas(X,Y,J,0,Rg,XSimule,YSimule).
+droiteBas(X,Y,J,R,R,XSimule,YSimule) :-
+	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'� la case non J
+droiteBas(X,Y,J,R,Rg,XSimule,YSimule) :-
+	decr(Y,Y1),
+	incr(X,X1),
+	incr(R,R1),
+	droiteBas(X1,Y1,J,R1,Rg,XSimule,YSimule).
+
+%%% En diagonale / %%%
+
+gagneDiag2(X,Y,J,XSimule,YSimule) :-
+	gaucheBasVerif(X,Y,J,Rg,XSimule,YSimule),
+	droiteHautVerif(X,Y,J,Rd,XSimule,YSimule),
+	!,
+	Rf is Rg+Rd,
+	Rf>4.
+
+gaucheBasVerif(X,Y,J,Rg,XSimule,YSimule) :-
+	gaucheBas(X,Y,J,0,Rg,XSimule,YSimule).
+gaucheBas(X,Y,J,R,R,XSimule,YSimule) :-
+	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'� la case non J
+gaucheBas(X,Y,J,R,Rg,XSimule,YSimule) :-
+	decr(Y,Y1),
+	decr(X,X1),
+	incr(R,R1),
+	gaucheBas(X1,Y1,J,R1,Rg,XSimule,YSimule).
+
+droiteHautVerif(X,Y,J,Rg,XSimule,YSimule) :-
+	droiteHaut(X,Y,J,0,Rg,XSimule,YSimule).
+droiteHaut(X,Y,J,R,R,XSimule,YSimule) :-
+	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'à la case non J
+droiteHaut(X,Y,J,R,Rg,XSimule,YSimule) :-
+	incr(Y,Y1),
+	incr(X,X1),
+	incr(R,R1),
+	droiteHaut(X1,Y1,J,R1,Rg,XSimule,YSimule).
+
+%%% Vérification de la victoire
+
+% gagne/3(+Colonne, +Ligne, +Joueur)
+% Vérifie si le coup est gagnant pour joueur.
+% Vrai si gagnant.
+gagne(X,Y,J,XSimule,YSimule) :-
+	gagneColonne(X,Y,J,XSimule,YSimule).
+gagne(X,Y,J,XSimule,YSimule) :-
+	gagneLigne(X,Y,J,XSimule,YSimule).
+gagne(X,Y,J,XSimule,YSimule) :-
+	gagneDiag1(X,Y,J,XSimule,YSimule).
+gagne(X,Y,J,XSimule,YSimule) :-
+	gagneDiag2(X,Y,J,XSimule,YSimule).
+
+
+evalVictoireAdversaire(Joueur,Coup) :-
+	nbColonnes(NBCOLONNES), nbLignes(NBLIGNES),
+	ennemi(Joueur,AutreJoueur),
+	between(1,NBCOLONNES,X), between(1,NBLIGNES,Y),
+	caseVide(X,Y),
+	gagne(X,Y,AutreJoueur,X,Y),
+	Coup is X.
