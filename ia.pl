@@ -10,6 +10,7 @@
 			  ,miroir/3
 			  ,miroirContre/3
 			  ,miroirContrePremierCoup/4
+			  ,symetrie/3
 			  ,poidsPuissance3/1
 			  ,poidsPosition/1
 			  ,poidsDensite/1
@@ -122,4 +123,20 @@ miroirContrePremierCoup(JoueurCourant,Coup,CoupPrecedent,PremierCoupSaved) :-
 	Coup is CoupPrecedent.
 
 miroirContrePremierCoup(JoueurCourant,Coup,CoupPrecedent,PremierCoupSaved) :-
+	toujoursMilieu(Coup).
+
+
+%% En priorité, essaye de contrer la victoire imminente de l'adversaire. Ensuite :
+%% Joue le coup symétrique du coup précédent de l'adversaire. Sinon, applique la stratégie toujoursMilieu.
+symetrie(JoueurCourant,Coup,CoupPrecedent) :-
+	evalVictoireAdversaire(JoueurCourant,Coup),
+	coupValide(Coup).
+
+symetrie(JoueurCourant,Coup,CoupPrecedent) :-
+	CoupSymetrique is CoupPrecedent-8,
+	CoupSymetriqueAbs is abs(CoupSymetrique),
+	coupValide(CoupSymetriqueAbs),
+	Coup is CoupSymetriqueAbs.
+
+symetrie(JoueurCourant,Coup,CoupPrecedent) :-
 	toujoursMilieu(Coup).

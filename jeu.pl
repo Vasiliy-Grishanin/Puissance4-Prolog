@@ -40,6 +40,7 @@ typeJoueur(10,'IA Toujours Milieu + contre').
 typeJoueur(11,'IA Miroir').
 typeJoueur(12,'IA Miroir + contre').
 typeJoueur(13,'IA Miroir 1er coup amélioré + contre').
+typeJoueur(14,'IA Symétrie + contre').
 
 
 

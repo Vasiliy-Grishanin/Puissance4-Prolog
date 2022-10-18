@@ -215,3 +215,8 @@ obtenirCoup(CouleurJCourant,13,Coup) :-
     assert(coupSave(Coup)),
     retractall(premierCoup(_)),
     assert(premierCoup(1)).
+obtenirCoup(CouleurJCourant,14,Coup) :-
+    coupSave(CoupSaved),
+    symetrie(CouleurJCourant,Coup,CoupSaved),
+    retractall(coupSave(_)),
+    assert(coupSave(Coup)).
