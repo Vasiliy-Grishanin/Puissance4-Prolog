@@ -7,6 +7,7 @@
 			  ,iaMinimax/7
 			  ,toujoursMilieu/1
 			  ,toujoursMilieuContre/2
+			  ,miroir/3
 			  ,poidsPuissance3/1
 			  ,poidsPosition/1
 			  ,poidsDensite/1
@@ -80,4 +81,12 @@ toujoursMilieuContre(JoueurCourant,Coup) :-
 	coupValide(Coup).
 
 toujoursMilieuContre(JoueurCourant,Coup) :-
+	toujoursMilieu(Coup).
+
+%% Joue le même coup que le coup précédent de l'adversaire. Sinon, applique la stratégie toujoursMilieu.
+miroir(JoueurCourant,Coup,CoupPrecedent) :-
+	coupValide(CoupPrecedent),
+	Coup is CoupPrecedent.
+
+miroir(JoueurCourant,Coup,CoupPrecedent) :-
 	toujoursMilieu(Coup).

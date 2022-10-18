@@ -37,6 +37,7 @@ typeJoueur(2,'IA Aléatoire').
 typeJoueur(3,'IA Minimax 3 - eval Position').
 typeJoueur(9,'IA Toujours Milieu').
 typeJoueur(10,'IA Toujours Milieu + contre').
+typeJoueur(11,'IA Miroir').
 
 
 changerJoueur :-
@@ -277,7 +278,7 @@ gagneLigne(X,Y,J,XSimule,YSimule) :-
 gaucheVerif(X,Y,J,Rg,XSimule,YSimule):-
 	gauche(X,Y,J,0,Rg,XSimule,YSimule).
 gauche(X,Y,J,R,R,XSimule,YSimule) :-
-	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'� la case non J
+	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'à la case non J
 gauche(X,Y,J,R,Rg,XSimule,YSimule) :-
 	decr(X,X1),
 	incr(R,R1),
@@ -286,7 +287,7 @@ gauche(X,Y,J,R,Rg,XSimule,YSimule) :-
 droiteVerif(X,Y,J,Rg,XSimule,YSimule):-
 	droite(X,Y,J,0,Rg,XSimule,YSimule).
 droite(X,Y,J,R,R,XSimule,YSimule) :-
-	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'� la case non J
+	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'à la case non J
 droite(X,Y,J,R,Rg,XSimule,YSimule) :-
 	incr(X,X1),
 	incr(R,R1),
@@ -304,7 +305,7 @@ gagneDiag1(X,Y,J,XSimule,YSimule) :-
 gaucheHautVerif(X,Y,J,Rg,XSimule,YSimule):-
 	gaucheHaut(X,Y,J,0,Rg,XSimule,YSimule).
 gaucheHaut(X,Y,J,R,R,XSimule,YSimule) :-
-	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'� la case non J
+	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'à la case non J
 gaucheHaut(X,Y,J,R,Rg,XSimule,YSimule) :-
 	incr(Y,Y1),
 	decr(X,X1),
@@ -314,7 +315,7 @@ gaucheHaut(X,Y,J,R,Rg,XSimule,YSimule) :-
 droiteBasVerif(X,Y,J,Rg,XSimule,YSimule):-
 	droiteBas(X,Y,J,0,Rg,XSimule,YSimule).
 droiteBas(X,Y,J,R,R,XSimule,YSimule) :-
-	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'� la case non J
+	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'à la case non J
 droiteBas(X,Y,J,R,Rg,XSimule,YSimule) :-
 	decr(Y,Y1),
 	incr(X,X1),
@@ -333,7 +334,7 @@ gagneDiag2(X,Y,J,XSimule,YSimule) :-
 gaucheBasVerif(X,Y,J,Rg,XSimule,YSimule) :-
 	gaucheBas(X,Y,J,0,Rg,XSimule,YSimule).
 gaucheBas(X,Y,J,R,R,XSimule,YSimule) :-
-	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'� la case non J
+	not(case(X,Y,J,XSimule,YSimule)). %Jusqu'à la case non J
 gaucheBas(X,Y,J,R,Rg,XSimule,YSimule) :-
 	decr(Y,Y1),
 	decr(X,X1),

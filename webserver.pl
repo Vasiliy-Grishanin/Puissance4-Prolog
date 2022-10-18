@@ -42,6 +42,7 @@ serveur(Port) :- http_server(http_dispatch, [port(Port)]).
 :- dynamic   http:location/3.
 http:location(files, '/f', []).
 
+:- dynamic coupSave/1.
 
 %%%%%%%%%%%
 %%  Routage
@@ -82,6 +83,8 @@ initAction(_) :-
     initJeu,
     retractall(joueurCourant(_,_)),
     retractall(autreJoueur(_,_)),
+    retractall(coupSave(_)),
+    assert(coupSave(4)),
     findall([X,Y], typeJoueur(X,Y), Z),
     reply_json(json{correct:true, players:Z}).
 
@@ -122,6 +125,8 @@ validerTourHumain(Request) :-
     atom_number(Col, Colonne),
     joueurCourant(CouleurJCourant,_),
     placerJeton(Colonne, Ligne, CouleurJCourant),
+    retractall(coupSave(_)),
+    assert(coupSave(Colonne)),
     statutJeu(Colonne,Ligne,CouleurJCourant, Statut),
     reply_json(json{correct:true, gameStatus:Statut, colPlayed:Colonne, rowPlayed:Ligne}),
     !.
@@ -168,7 +173,9 @@ obtenirCoup(_,2,Coup) :-
 
 obtenirCoup(CouleurJCourant,3,Coup) :-
     % iaMinimax(JoueurCourant,Coup,Profondeur,PoidsPosition,PoidsPuissance3,PoidsDensite,PoidsAdjacence)
-    iaMinimax(CouleurJCourant,Coup,3,1,0,0,0).
+    iaMinimax(CouleurJCourant,Coup,3,1,0,0,0),
+    retractall(coupSave(_)),
+    assert(coupSave(Coup)).
 obtenirCoup(CouleurJCourant,4,Coup) :-
     iaMinimax(CouleurJCourant,Coup,3,1,0,0,0).
 obtenirCoup(CouleurJCourant,5,Coup) :-
@@ -180,6 +187,15 @@ obtenirCoup(CouleurJCourant,7,Coup) :-
 obtenirCoup(CouleurJCourant,8,Coup) :-
     iaMinimax(CouleurJCourant,Coup,5,1,1,0,0).
 obtenirCoup(CouleurJCourant,9,Coup) :-
-    toujoursMilieu(Coup).
+    toujoursMilieu(Coup),
+    retractall(coupSave(_)),
+    assert(coupSave(Coup)).
 obtenirCoup(CouleurJCourant,10,Coup) :-
-    toujoursMilieuContre(CouleurJCourant,Coup).
+    toujoursMilieuContre(CouleurJCourant,Coup),
+    retractall(coupSave(_)),
+    assert(coupSave(Coup)).
+obtenirCoup(CouleurJCourant,11,Coup) :-
+    coupSave(CoupSaved),
+    miroir(CouleurJCourant,Coup,CoupSaved),
+    retractall(coupSave(_)),
+    assert(coupSave(Coup)).
