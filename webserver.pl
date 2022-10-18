@@ -43,6 +43,7 @@ serveur(Port) :- http_server(http_dispatch, [port(Port)]).
 http:location(files, '/f', []).
 
 :- dynamic coupSave/1.
+:- dynamic premierCoup/1.
 
 %%%%%%%%%%%
 %%  Routage
@@ -85,6 +86,8 @@ initAction(_) :-
     retractall(autreJoueur(_,_)),
     retractall(coupSave(_)),
     assert(coupSave(4)),
+    retractall(premierCoup(_)),
+    assert(premierCoup(0)),
     findall([X,Y], typeJoueur(X,Y), Z),
     reply_json(json{correct:true, players:Z}).
 
@@ -204,3 +207,11 @@ obtenirCoup(CouleurJCourant,12,Coup) :-
     miroirContre(CouleurJCourant,Coup,CoupSaved),
     retractall(coupSave(_)),
     assert(coupSave(Coup)).
+obtenirCoup(CouleurJCourant,13,Coup) :-
+    coupSave(CoupSaved),
+    premierCoup(PremierCoupSaved),
+    miroirContrePremierCoup(CouleurJCourant,Coup,CoupSaved,PremierCoupSaved),
+    retractall(coupSave(_)),
+    assert(coupSave(Coup)),
+    retractall(premierCoup(_)),
+    assert(premierCoup(1)).
