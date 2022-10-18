@@ -8,6 +8,7 @@
 			  ,toujoursMilieu/1
 			  ,toujoursMilieuContre/2
 			  ,miroir/3
+			  ,miroirContre/3
 			  ,poidsPuissance3/1
 			  ,poidsPosition/1
 			  ,poidsDensite/1
@@ -89,4 +90,17 @@ miroir(JoueurCourant,Coup,CoupPrecedent) :-
 	Coup is CoupPrecedent.
 
 miroir(JoueurCourant,Coup,CoupPrecedent) :-
+	toujoursMilieu(Coup).
+
+%% En priorité, essaye de contrer la victoire imminente de l'adversaire. Ensuite :
+%% Joue le même coup que le coup précédent de l'adversaire. Sinon, applique la stratégie toujoursMilieu.
+miroirContre(JoueurCourant,Coup,CoupPrecedent) :-
+	evalVictoireAdversaire(JoueurCourant,Coup),
+	coupValide(Coup).
+
+miroirContre(JoueurCourant,Coup,CoupPrecedent) :-
+	coupValide(CoupPrecedent),
+	Coup is CoupPrecedent.
+
+miroirContre(JoueurCourant,Coup,CoupPrecedent) :-
 	toujoursMilieu(Coup).

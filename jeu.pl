@@ -38,6 +38,7 @@ typeJoueur(3,'IA Minimax 3 - eval Position').
 typeJoueur(9,'IA Toujours Milieu').
 typeJoueur(10,'IA Toujours Milieu + contre').
 typeJoueur(11,'IA Miroir').
+typeJoueur(12,'IA Miroir + contre').
 
 
 changerJoueur :-
@@ -300,7 +301,9 @@ gagneDiag1(X,Y,J,XSimule,YSimule) :-
 	droiteBasVerif(X,Y,J,Rd,XSimule,YSimule),
 	!,
 	Rf is Rg+Rd,
-	Rf>4.
+	Rf>4,
+	decr(Y,Y1),
+	not(caseVide(X,Y1)).
 
 gaucheHautVerif(X,Y,J,Rg,XSimule,YSimule):-
 	gaucheHaut(X,Y,J,0,Rg,XSimule,YSimule).
@@ -329,7 +332,9 @@ gagneDiag2(X,Y,J,XSimule,YSimule) :-
 	droiteHautVerif(X,Y,J,Rd,XSimule,YSimule),
 	!,
 	Rf is Rg+Rd,
-	Rf>4.
+	Rf>4,
+	decr(Y,Y1),
+	not(caseVide(X,Y1)).
 
 gaucheBasVerif(X,Y,J,Rg,XSimule,YSimule) :-
 	gaucheBas(X,Y,J,0,Rg,XSimule,YSimule).

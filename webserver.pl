@@ -199,3 +199,8 @@ obtenirCoup(CouleurJCourant,11,Coup) :-
     miroir(CouleurJCourant,Coup,CoupSaved),
     retractall(coupSave(_)),
     assert(coupSave(Coup)).
+obtenirCoup(CouleurJCourant,12,Coup) :-
+    coupSave(CoupSaved),
+    miroirContre(CouleurJCourant,Coup,CoupSaved),
+    retractall(coupSave(_)),
+    assert(coupSave(Coup)).
