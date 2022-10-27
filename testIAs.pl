@@ -1,5 +1,5 @@
 ﻿%%%%%%%%%%%% testIAs.pl %%%%%%%%%%%%
-% Permet de tester comment performent différentes IAs lorsqu'elles jouent l'une contre l'autre.
+% Permet de tester comment performent differentes IAs lorsqu'elles jouent l'une contre l'autre.
 
 %%%%%%%%%%%%%%%%
 %% Inclusions %%
@@ -15,10 +15,10 @@
 :- dynamic autreJoueur/2.
 
 %%%%%%%%%%%%%%%%%%%%%%%
-%% Prédicats publics %%
+%% Predicats publics %%
 %%%%%%%%%%%%%%%%%%%%%%%
 
-% runTest/3
+%runTest/3
 % NbIterations: le nombre de parties à jouer,
 % IA1 et IA2 : les identifiants des 2 IA à confronter
 % IA1 joue contre IA2 "NbIterations" fois le predicat affiche combien de fois qui a battu qui
@@ -28,13 +28,13 @@ runTest(NbIterations,IA1,IA2) :-
 	runTestIAXEnPremier(NbIterationsParIA,IA2,IA1,0,NbFoisIA2GagneEnCommencant,0,NbFoisIA2PerdEnCommencant),
 	typeJoueur(IA1,TypeIA1),
 	typeJoueur(IA2,TypeIA2),
-	write(TypeIA2), write(' en commençant : a gagné '), write(NbFoisIA2GagneEnCommencant),write(' fois et a perdu '),write(NbFoisIA2PerdEnCommencant),write(' fois.'),
+	write(TypeIA2), write(' en commencant : a gagne '), write(NbFoisIA2GagneEnCommencant),write(' fois et a perdu '),write(NbFoisIA2PerdEnCommencant),write(' fois.'),
 	nl,
-	write(TypeIA1), write(' en commençant : a gagné '), write(NbFoisIA1GagneEnCommencant),write(' fois et a perdu '),write(NbFoisIA1PerdEnCommencant),write(' fois.'),
+	write(TypeIA1), write(' en commencant : a gagne '), write(NbFoisIA1GagneEnCommencant),write(' fois et a perdu '),write(NbFoisIA1PerdEnCommencant),write(' fois.'),
 	!.
 
 %%%%%%%%%%%%%%%%%%%%%%
-%% Prédicats privés %%
+%% Predicats prives %%
 %%%%%%%%%%%%%%%%%%%%%%
 
 % test de sortie de runTestIAXEnPremier
@@ -76,5 +76,9 @@ testFin(_,_,_,PartieNulle) :-
 
 init :-
 	initJeu,
+	retractall(coupSave(_)),
+    assert(coupSave(4)),
+    retractall(premierCoup(_)),
+    assert(premierCoup(0)),
 	retractall(joueurCourant(_,_)),
 	retractall(autreJoueur(_,_)).

@@ -33,14 +33,14 @@
 
 % Définition des différentes IA.
 typeJoueur(1,'Humain').
-typeJoueur(2,'IA Aléatoire').
+typeJoueur(2,'IA Aleatoire').
 typeJoueur(3,'IA Minimax 3 - eval Position').
 typeJoueur(9,'IA Toujours Milieu').
 typeJoueur(10,'IA Toujours Milieu + contre').
 typeJoueur(11,'IA Miroir').
 typeJoueur(12,'IA Miroir + contre').
-typeJoueur(13,'IA Miroir 1er coup amélioré + contre').
-typeJoueur(14,'IA Symétrie + contre').
+typeJoueur(13,'IA Miroir 1er coup ameliore + contre').
+typeJoueur(14,'IA Symetrie + contre').
 
 
 
@@ -273,11 +273,19 @@ gagneColonne(X,Y,J,XSimule,YSimule) :-
 
 %%% En ligne %%%
 
+verifGravite(X,Y):-
+	Y==1.
+
+verifGravite(X,Y):-
+	decr(Y,Y1),
+	not(caseVide(X,Y1)).
+
 gagneLigne(X,Y,J,XSimule,YSimule) :-
 	gaucheVerif(X,Y,J,Rg,XSimule,YSimule),
 	droiteVerif(X,Y,J,Rd,XSimule,YSimule),
 	!,
-	Rf is Rg+Rd, Rf>4.
+	Rf is Rg+Rd, Rf>4,
+	verifGravite(X,Y).
 
 gaucheVerif(X,Y,J,Rg,XSimule,YSimule):-
 	gauche(X,Y,J,0,Rg,XSimule,YSimule).

@@ -172,7 +172,9 @@ statutJeu(_,_,_, 'continue') :-
 % Unifie à Colonne le coup joué par l'IA dont le code est CodeIA
 % CodeIA == 2 :- IA aleatoire
 obtenirCoup(_,2,Coup) :-
-    iaAleatoire(Coup).
+    iaAleatoire(Coup),
+    retractall(coupSave(_)),
+    assert(coupSave(Coup)).
 
 obtenirCoup(CouleurJCourant,3,Coup) :-
     % iaMinimax(JoueurCourant,Coup,Profondeur,PoidsPosition,PoidsPuissance3,PoidsDensite,PoidsAdjacence)
